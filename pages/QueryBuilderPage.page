@@ -1,0 +1,107 @@
+<apex:page controller="QueryBuilder"> 
+
+    <apex:form id="field">
+        <apex:outputPanel title="Error" id="error">
+        <apex:pageMessages ></apex:pageMessages>
+        </apex:outputPanel>
+        <apex:pageBlock >
+
+            <!-- Search BOx Starts Here -->
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Search : " />
+                    <apex:inputText value="{!searchText}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <!-- Search BOx Ends Here -->
+
+            <!-- Object MEnu Starts Here -->
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Objects :" />
+                    <apex:panelGrid columns="3">
+                        <apex:panelGroup style="width:40%;height:120px">
+                        <apex:selectList value="{!sfields}" multiselect="true" style="width:120px;height:120px;">
+                            <apex:selectOptions value="{!fnsOptions}" />
+                            </apex:selectList>
+                        </apex:panelGroup>
+
+                        <apex:panelGroup style="width:20%">
+                            <table height="120px">
+                                <tr><td>
+                                        <apex:commandButton value="Add" action="{!addFields}" style="width:80px;" reRender="field"/>
+                                    </td>
+                                </tr>
+                                <tr><td>    
+                                        <apex:commandButton value="Remove" action="{!removeFields}" style="width:80px;" reRender="field"/>
+                                    </td>
+                                </tr>     
+                            </table>
+                        </apex:panelGroup>          
+
+                        <apex:panelGroup style="width:40%">
+                            <apex:selectList value="{!rfields}" multiselect="true" style="width:120px;height:120px;">
+                                <apex:selectOptions value="{!fsOptions}" />
+                            </apex:selectList>
+                        </apex:panelGroup>              
+
+                    </apex:panelGrid>
+                </apex:pageBlockSectionItem>
+                </apex:PageBlockSection>
+            <!-- Object MEnu Ends Here -->
+
+            <!-- Object MEnu Ends Here -->
+            <apex:PageBlockSection >
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Limit : " />
+                    <apex:selectList value="{!limits}" size="1">
+                        <apex:selectOptions value="{!listLimitOption}" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:PageBlockSection>
+
+            <apex:PageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Order By : " />
+                    <apex:selectList value="{!order}" size="1">
+                        <apex:selectOptions value="{!listOrderOption}" />
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+
+            </apex:PageBlockSection>
+            <!-- Object MEnu Ends Here -->
+
+            <!-- Query BUtton Starts Here -->
+                <apex:PageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Click : " />
+                        <apex:commandButton value="Execute Query" action="{!myQueryData}" reRender="field"/>
+                    </apex:pageBlockSectionItem>
+                </apex:PageBlockSection>
+            <!-- Query BUtton Ends Here -->
+
+            <!-- Generated Query Starts Here -->
+                <apex:PageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Generated Query : "  />
+                        {!query}
+                    </apex:pageBlockSectionItem>
+                </apex:PageBlockSection>
+            <!-- Generated Query Ends Here -->
+
+            <!-- Generated Query Result Starts Here -->
+                <apex:pageBlockSection >
+                <apex:pageBlockSection collapsible="false" columns="1" title="Results" rendered="{!searchResults.size > 0}">
+                    <apex:repeat value="{!searchResults}" var="row">
+                    <apex:commandLink action="/{!row.record.id}" value="{!row.sObjectTypeName} - {!row.record['Name']},{!row.record['Id']}" target="_blank">
+                    
+                    </apex:commandlink>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                </apex:pageBlockSection>
+            <!-- Generated Query Result Ends Here -->
+
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>
